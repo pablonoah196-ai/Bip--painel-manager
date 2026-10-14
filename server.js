@@ -156,8 +156,14 @@ app.get("/auth/discord/callback", async (req, res) => {
       }
     );
 
-    if (!tokenRes.ok) throw new Error("Falha na troca do código.");
-    const token = await tokenRes.json();
+  
+if (!tokenRes.ok) {
+  const erroDiscord = await tokenRes.text();
+  console.error("Erro OAuth Discord:", tokenRes.status, erroDiscord);
+  throw new Error("Falha na troca do código. HTTP " + tokenRes.status);
+}
+const token = await tokenRes.json();
+    
 
     const userRes = await fetch(
       "https://discord.com/api/users/@me",
