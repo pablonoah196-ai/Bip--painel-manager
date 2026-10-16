@@ -22,21 +22,22 @@ for (const key of required) {
   if (!process.env[key]) {
     console.error(`Variável ausente: ${key}`);
     process.exit(1);
-  }
-}
-
+  
 app.use(session({
   name: "bip.sid",
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "lax",
+    path: "/",
     maxAge: 4 * 60 * 60 * 1000
   }
 }));
+    
 
 app.use("/auth", rateLimit({
   windowMs: 15 * 60 * 1000,
