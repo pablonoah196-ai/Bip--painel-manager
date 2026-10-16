@@ -22,7 +22,9 @@ for (const key of required) {
   if (!process.env[key]) {
     console.error(`Variável ausente: ${key}`);
     process.exit(1);
-  
+  }
+}
+
 app.use(session({
   name: "bip.sid",
   secret: process.env.SESSION_SECRET,
@@ -37,6 +39,7 @@ app.use(session({
     maxAge: 4 * 60 * 60 * 1000
   }
 }));
+
     
 
 app.use("/auth", rateLimit({
